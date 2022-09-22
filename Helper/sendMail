@@ -1,0 +1,24 @@
+const nodemailer = require("nodemailer");
+const dotenv = require("dotenv");
+dotenv.config();
+
+const sender = process.env.SENDER;
+exports.sendMail = async (mailListDetails) => {
+  try {
+    let mailTransporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: sender,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    const sendmail = await mailTransporter.sendMail({
+      ...mailListDetails,
+    });
+    return sendmail;
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
